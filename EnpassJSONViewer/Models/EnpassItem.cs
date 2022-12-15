@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace EnpassJSONViewer.Models
 {
-    class EnpassItem
+    public class EnpassItem : IEquatable<EnpassItem>
     {
         public EnpassFolder Folder { get; }
         public IEnumerable<EnpassFolder> Folders => _folders;
@@ -15,16 +15,19 @@ namespace EnpassJSONViewer.Models
         public string Title { get; }
         public string Subtitle { get; }
         public string Note { get; }
-        public DateTime UpdatedAt { get; }
+        public DateTime UpdatedAtUTC { get; }
+        public DateTime UpdatedAtLocal => UpdatedAtUTC.ToLocalTime();
 
         public string Username { get; private set; }
         public string Password { get; private set; }
         public string Email { get; private set; }
         public string Url { get; private set; }
 
+        public int FieldCount => _fields.Count;
         public IEnumerable<EnpassField> Fields => _fields;
         private ImmutableList<EnpassField> _fields = ImmutableList<EnpassField>.Empty;
 
+        public int AttachmentCount => _attachments.Count;
         public IEnumerable<EnpassAttachment> Attachments => _attachments;
         private ImmutableList<EnpassAttachment> _attachments = ImmutableList<EnpassAttachment>.Empty;
 
@@ -36,7 +39,7 @@ namespace EnpassJSONViewer.Models
             Title = title;
             Subtitle = subtitle;
             Note = note;
-            UpdatedAt = updatedAt;
+            UpdatedAtUTC = updatedAt;
             Username = Password = Email = Url = null;
         }
 
@@ -57,6 +60,10 @@ namespace EnpassJSONViewer.Models
                 throw new ArgumentNullException(nameof(attachments));
             _attachments = _attachments.AddRange(attachments);
         }
+
+        public override int GetHashCode() => Id.GetHashCode();
+        public bool Equals(EnpassItem other) => other != null && Id.Equals(other.Id);
+        public override bool Equals(object obj) => Equals(obj as EnpassItem);
 
         public override string ToString() => Title;
     }

@@ -2,19 +2,15 @@
 using EnpassJSONViewer.Models;
 using EnpassJSONViewer.Services;
 using EnpassJSONViewer.Types;
-using System;
 using System.Collections.Immutable;
-using System.IO;
-using System.Linq;
 
 namespace EnpassJSONViewer.ViewModels
 {
     class MainViewModel : ViewModelBase
     {
-        const string AppName = "Enpass JSON Viewer";
-
         private IOpenFileDialogService OpenDlgService => GetService<IOpenFileDialogService>();
         private IEnpassDatabaseLoader LoaderService => GetService<IEnpassDatabaseLoader>();
+        private IModalDialogsService DialogService => GetService<IModalDialogsService>();
 
         public EnpassDatabase Database
         {
@@ -26,6 +22,12 @@ namespace EnpassJSONViewer.ViewModels
         {
             get => GetValue<EnpassFolder>();
             set => SetValue(value, () => ActiveFolderChanged(value));
+        }
+
+        public EnpassItem ActiveItem
+        {
+            get => GetValue<EnpassItem>();
+            set => SetValue(value, () => ShowItemDetailsCommand.RaiseCanExecuteChanged());
         }
 
         public ImmutableArray<EnpassItem> ActiveItems
@@ -52,12 +54,17 @@ namespace EnpassJSONViewer.ViewModels
         public string Title { get => GetValue<string>(); private set => SetValue(value); }
 
         public DelegateCommand SelectFileCommand { get; }
+        public DelegateCommand<EnpassItem> ShowItemDetailsCommand { get; }
 
         public MainViewModel()
         {
-            Title = AppName;
+            Title = AppConstants.AppName;
             SelectFileCommand = new DelegateCommand(SelectFile);
+            ShowItemDetailsCommand = new DelegateCommand<EnpassItem>(ShowItemDetails, CanShowItemDetails);
         }
+
+        private bool CanShowItemDetails(EnpassItem item) => item != null;
+        private void ShowItemDetails(EnpassItem item) => DialogService.ShowItemDetails(item);
 
         private void ActiveFolderChanged(EnpassFolder folder)
         {
@@ -85,6 +92,7 @@ namespace EnpassJSONViewer.ViewModels
         {
             ActiveFilePath = null;
             Database = null;
+            ActiveItem = null;
             ActiveFolder = null;
         }
 
@@ -98,6 +106,7 @@ namespace EnpassJSONViewer.ViewModels
 
             ActiveFilePath = filePath;
             Database = res.Value;
+            ActiveItem = null;
             ActiveFolder = null;
             return true;
         }
@@ -105,9 +114,9 @@ namespace EnpassJSONViewer.ViewModels
         private void UpdateTitle(string filePath)
         {
             if (!string.IsNullOrEmpty(filePath))
-                Title = $"{AppName} - {filePath}";
+                Title = $"{AppConstants.AppName} - {filePath}";
             else
-                Title = $"{AppName}";
+                Title = $"{AppConstants.AppName}";
         }
     }
 }

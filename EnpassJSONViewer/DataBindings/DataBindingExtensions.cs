@@ -5,10 +5,11 @@ using System.Reflection;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Collections.Immutable;
+using EnpassJSONViewer.Utils;
 
 namespace EnpassJSONViewer.DataBindings
 {
-    static class DataBindingManager
+    static class DataBindingExtensions
     {
         interface ITreeViewBinding<T> : IDisposable
         {
@@ -308,6 +309,7 @@ namespace EnpassJSONViewer.DataBindings
                     {
                         ImageIndex = 0,
                         StateImageIndex = 0,
+                        Tag = item,
                     };
                     int columnIndex = 0;
                     foreach (ListViewColumnBinding<T> column in _columns)
@@ -321,8 +323,9 @@ namespace EnpassJSONViewer.DataBindings
                     }
                     View.Items.Add(listItem);
                 }
-                View.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
                 View.EndUpdate();
+
+                ListViewUtils.AutoSizeColumnList(View);
             }
         }
 
@@ -346,7 +349,7 @@ namespace EnpassJSONViewer.DataBindings
             }
         }
 
-        public static void BindNodes<T>(TreeView treeView, Binding binding, Func<T, string> keyFunc, Func<T, string> parentFunc)
+        public static void Bind<T>(this TreeView treeView, Binding binding, Func<T, string> keyFunc, Func<T, string> parentFunc)
         {
             if (treeView == null)
                 throw new ArgumentNullException(nameof(treeView));
@@ -359,7 +362,7 @@ namespace EnpassJSONViewer.DataBindings
             TreeViewBindingManager<T>.Instance.Bind(treeView, binding, keyFunc, parentFunc);
         }
 
-        public static void Bind<T>(ListView listView, Binding binding, IEnumerable<ListViewColumnBinding<T>> columns)
+        public static void Bind<T>(this ListView listView, Binding binding, IEnumerable<ListViewColumnBinding<T>> columns)
         {
             if (listView == null)
                 throw new ArgumentNullException(nameof(listView));

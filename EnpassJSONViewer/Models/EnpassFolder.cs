@@ -4,7 +4,7 @@ using System.Diagnostics;
 namespace EnpassJSONViewer.Models
 {
     [DebuggerDisplay("{Title} [{UpdatedAt}/{UUID}]")]
-    class EnpassFolder : IEquatable<EnpassFolder>
+    public class EnpassFolder : IEquatable<EnpassFolder>
     {
         public EnpassFolder Parent { get; internal set; }
         public Guid Id { get; }

@@ -32,28 +32,38 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.tslblCurrentFolder = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tslblActiveFolder = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tslblActiveItem = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbtnLoadFile = new System.Windows.Forms.ToolStripButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tvCategories = new System.Windows.Forms.TreeView();
             this.imglstCategories = new System.Windows.Forms.ImageList(this.components);
             this.lvItems = new System.Windows.Forms.ListView();
-            this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
             this.imglstItems = new System.Windows.Forms.ImageList(this.components);
+            this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1,
-            this.tslblCurrentFolder});
+            this.tslblActiveFolder,
+            this.toolStripStatusLabel2,
+            this.tslblActiveItem});
             this.statusStrip1.Location = new System.Drawing.Point(0, 428);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(800, 22);
@@ -66,17 +76,30 @@
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(43, 17);
             this.toolStripStatusLabel1.Text = "Folder:";
             // 
-            // tslblCurrentFolder
+            // tslblActiveFolder
             // 
-            this.tslblCurrentFolder.Name = "tslblCurrentFolder";
-            this.tslblCurrentFolder.Size = new System.Drawing.Size(118, 17);
-            this.tslblCurrentFolder.Text = "toolStripStatusLabel2";
+            this.tslblActiveFolder.Name = "tslblActiveFolder";
+            this.tslblActiveFolder.Size = new System.Drawing.Size(12, 17);
+            this.tslblActiveFolder.Text = "-";
+            // 
+            // toolStripStatusLabel2
+            // 
+            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(34, 17);
+            this.toolStripStatusLabel2.Text = "Item:";
+            // 
+            // tslblActiveItem
+            // 
+            this.tslblActiveItem.Name = "tslblActiveItem";
+            this.tslblActiveItem.Size = new System.Drawing.Size(12, 17);
+            this.tslblActiveItem.Text = "-";
             // 
             // toolStrip1
             // 
+            this.toolStrip1.AutoSize = false;
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbtnLoadFile});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(800, 25);
             this.toolStrip1.TabIndex = 1;
@@ -89,13 +112,14 @@
             this.tsbtnLoadFile.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbtnLoadFile.Name = "tsbtnLoadFile";
             this.tsbtnLoadFile.Size = new System.Drawing.Size(23, 22);
-            this.tsbtnLoadFile.Text = "toolStripButton1";
-            this.tsbtnLoadFile.Click += new System.EventHandler(this.tsbtnLoadFile_Click);
+            this.tsbtnLoadFile.Text = "Select Enpass JSON File...";
+            this.tsbtnLoadFile.ToolTipText = "Select Enpass JSON File...";
+            this.tsbtnLoadFile.Click += new System.EventHandler(this.OnSelectFileClick);
             // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 25);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 49);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -105,7 +129,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.lvItems);
-            this.splitContainer1.Size = new System.Drawing.Size(800, 403);
+            this.splitContainer1.Size = new System.Drawing.Size(800, 379);
             this.splitContainer1.SplitterDistance = 266;
             this.splitContainer1.TabIndex = 2;
             // 
@@ -117,8 +141,9 @@
             this.tvCategories.Location = new System.Drawing.Point(0, 0);
             this.tvCategories.Name = "tvCategories";
             this.tvCategories.SelectedImageIndex = 0;
-            this.tvCategories.Size = new System.Drawing.Size(266, 403);
+            this.tvCategories.Size = new System.Drawing.Size(266, 379);
             this.tvCategories.TabIndex = 0;
+            this.tvCategories.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.OnCategoriesAfterSelect);
             // 
             // imglstCategories
             // 
@@ -130,20 +155,20 @@
             // 
             // lvItems
             // 
+            this.lvItems.AllowColumnReorder = true;
             this.lvItems.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvItems.FullRowSelect = true;
+            this.lvItems.GridLines = true;
             this.lvItems.Location = new System.Drawing.Point(0, 0);
+            this.lvItems.MultiSelect = false;
             this.lvItems.Name = "lvItems";
-            this.lvItems.Size = new System.Drawing.Size(530, 403);
+            this.lvItems.Size = new System.Drawing.Size(530, 379);
             this.lvItems.SmallImageList = this.imglstItems;
             this.lvItems.TabIndex = 0;
             this.lvItems.UseCompatibleStateImageBehavior = false;
             this.lvItems.View = System.Windows.Forms.View.Details;
-            // 
-            // dlgOpenFile
-            // 
-            this.dlgOpenFile.FileName = "openFileDialog1";
-            this.dlgOpenFile.Filter = "Enpass JSON File (*.json)|.json";
-            this.dlgOpenFile.Title = "Open Enpass JSON File";
+            this.lvItems.SelectedIndexChanged += new System.EventHandler(this.OnItemsSelectedIndexChanged);
+            this.lvItems.DoubleClick += new System.EventHandler(this.OnItemsDoubleClick);
             // 
             // imglstItems
             // 
@@ -151,6 +176,51 @@
             this.imglstItems.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imglstItems.ImageStream")));
             this.imglstItems.TransparentColor = System.Drawing.Color.Transparent;
             this.imglstItems.Images.SetKeyName(0, "KeyVertical.png");
+            // 
+            // dlgOpenFile
+            // 
+            this.dlgOpenFile.FileName = "openFileDialog1";
+            this.dlgOpenFile.Filter = "Enpass JSON File (*.json)|.json";
+            this.dlgOpenFile.Title = "Open Enpass JSON File";
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(800, 24);
+            this.menuStrip1.TabIndex = 3;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openToolStripMenuItem,
+            this.toolStripMenuItem1,
+            this.exitToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // openToolStripMenuItem
+            // 
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.openToolStripMenuItem.Text = "Open...";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.OnSelectFileClick);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(109, 6);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.OnExitClick);
             // 
             // MainForm
             // 
@@ -160,6 +230,8 @@
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.Text = "Enpass JSON Viewer";
             this.statusStrip1.ResumeLayout(false);
@@ -170,6 +242,8 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -186,7 +260,14 @@
         private System.Windows.Forms.OpenFileDialog dlgOpenFile;
         private System.Windows.Forms.ImageList imglstCategories;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
-        private System.Windows.Forms.ToolStripStatusLabel tslblCurrentFolder;
+        private System.Windows.Forms.ToolStripStatusLabel tslblActiveFolder;
         private System.Windows.Forms.ImageList imglstItems;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
+        private System.Windows.Forms.ToolStripStatusLabel tslblActiveItem;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
     }
 }

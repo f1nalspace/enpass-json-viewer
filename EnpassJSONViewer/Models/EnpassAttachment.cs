@@ -3,7 +3,7 @@ using System.Collections.Immutable;
 
 namespace EnpassJSONViewer.Models
 {
-    class EnpassAttachment
+    public class EnpassAttachment : IEquatable<EnpassAttachment>
     {
         public Guid Id { get; }
         public string Name { get; }
@@ -21,6 +21,10 @@ namespace EnpassJSONViewer.Models
             Updated = updated;
             Order = order;
         }
+
+        public override int GetHashCode() => Id.GetHashCode();
+        public bool Equals(EnpassAttachment other) => other != null && Id.Equals(other.Id);
+        public override bool Equals(object obj) => Equals(obj as EnpassAttachment);
 
         public override string ToString() => Name;
     }
