@@ -9,16 +9,17 @@ namespace EnpassJSONViewer.Models
         public string Name { get; }
         public string Kind { get; }
         public ImmutableArray<byte> Data { get; }
-        public DateTime Updated { get; }
+        public DateTime UpdatedUTC { get; }
+        public DateTime UpdatedLocal => UpdatedUTC.ToLocalTime();
         public int Order { get; }
 
         public EnpassAttachment(Guid id, string name, string kind, ImmutableArray<byte> data, DateTime updated, int order)
         {
             Id = id;
             Name = name;
-            Kind = kind;
+            Kind = kind ?? string.Empty;
             Data = data;
-            Updated = updated;
+            UpdatedUTC = updated;
             Order = order;
         }
 

@@ -64,9 +64,10 @@
             this.tslblActiveFolder,
             this.toolStripStatusLabel2,
             this.tslblActiveItem});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 428);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 608);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(800, 22);
+            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 18, 0);
+            this.statusStrip1.Size = new System.Drawing.Size(1029, 22);
             this.statusStrip1.TabIndex = 0;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -99,9 +100,9 @@
             this.toolStrip1.AutoSize = false;
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbtnLoadFile});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 24);
+            this.toolStrip1.Location = new System.Drawing.Point(0, 25);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(800, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(1029, 35);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -111,7 +112,7 @@
             this.tsbtnLoadFile.Image = ((System.Drawing.Image)(resources.GetObject("tsbtnLoadFile.Image")));
             this.tsbtnLoadFile.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbtnLoadFile.Name = "tsbtnLoadFile";
-            this.tsbtnLoadFile.Size = new System.Drawing.Size(23, 22);
+            this.tsbtnLoadFile.Size = new System.Drawing.Size(23, 32);
             this.tsbtnLoadFile.Text = "Select Enpass JSON File...";
             this.tsbtnLoadFile.ToolTipText = "Select Enpass JSON File...";
             this.tsbtnLoadFile.Click += new System.EventHandler(this.OnSelectFileClick);
@@ -119,7 +120,8 @@
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 49);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 60);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -129,8 +131,9 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.lvItems);
-            this.splitContainer1.Size = new System.Drawing.Size(800, 379);
-            this.splitContainer1.SplitterDistance = 266;
+            this.splitContainer1.Size = new System.Drawing.Size(1029, 548);
+            this.splitContainer1.SplitterDistance = 342;
+            this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 2;
             // 
             // tvCategories
@@ -139,9 +142,10 @@
             this.tvCategories.ImageIndex = 0;
             this.tvCategories.ImageList = this.imglstCategories;
             this.tvCategories.Location = new System.Drawing.Point(0, 0);
+            this.tvCategories.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tvCategories.Name = "tvCategories";
             this.tvCategories.SelectedImageIndex = 0;
-            this.tvCategories.Size = new System.Drawing.Size(266, 379);
+            this.tvCategories.Size = new System.Drawing.Size(342, 548);
             this.tvCategories.TabIndex = 0;
             this.tvCategories.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.OnCategoriesAfterSelect);
             // 
@@ -160,9 +164,10 @@
             this.lvItems.FullRowSelect = true;
             this.lvItems.GridLines = true;
             this.lvItems.Location = new System.Drawing.Point(0, 0);
+            this.lvItems.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.lvItems.MultiSelect = false;
             this.lvItems.Name = "lvItems";
-            this.lvItems.Size = new System.Drawing.Size(530, 379);
+            this.lvItems.Size = new System.Drawing.Size(682, 548);
             this.lvItems.SmallImageList = this.imglstItems;
             this.lvItems.TabIndex = 0;
             this.lvItems.UseCompatibleStateImageBehavior = false;
@@ -189,7 +194,8 @@
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(800, 24);
+            this.menuStrip1.Padding = new System.Windows.Forms.Padding(8, 3, 0, 3);
+            this.menuStrip1.Size = new System.Drawing.Size(1029, 25);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -200,7 +206,7 @@
             this.toolStripMenuItem1,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 19);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // openToolStripMenuItem
@@ -224,14 +230,16 @@
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1029, 630);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
+            this.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.MainMenuStrip = this.menuStrip1;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "MainForm";
             this.Text = "Enpass JSON Viewer";
             this.statusStrip1.ResumeLayout(false);

@@ -34,7 +34,8 @@ namespace EnpassJSONViewer
             tvCategories.Bind<EnpassFolder>(
                 new Binding(nameof(TreeView.Nodes), _viewModel, $"{nameof(MainViewModel.Database)}.{nameof(EnpassDatabase.Folders)}"),
                 (f) => f.Id.ToString(),
-                (f) => (f.Parent?.Id ?? Guid.Empty).ToString());
+                (f) => (f.Parent?.Id ?? Guid.Empty).ToString(),
+                (f) => 0);
 
             // Data-Bind EnpassItem´s to ListView (See DataBindingExtensions class)
             lvItems.ListViewItemSorter = new SimpleListViewItemComparer();
@@ -50,7 +51,8 @@ namespace EnpassJSONViewer
                     new ListViewColumnBinding<EnpassItem>("Updated At", (f) => f.UpdatedAtLocal.ToString(AppConstants.LocalDateFormat)),
                     new ListViewColumnBinding<EnpassItem>("Fields", (f) => f.FieldCount.ToString()),
                     new ListViewColumnBinding<EnpassItem>("Attachments", (f) => f.AttachmentCount.ToString()),
-                }
+                },
+                (f) => 0
             );
 
             // Show ActiveFolder and ActiveItem in StatusStrip (DataBinding does not work there)

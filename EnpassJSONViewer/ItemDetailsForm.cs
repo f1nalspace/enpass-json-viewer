@@ -1,7 +1,9 @@
-﻿using EnpassJSONViewer.Comparer;
+using EnpassJSONViewer.Comparer;
 using EnpassJSONViewer.Models;
+using EnpassJSONViewer.Utils;
 using EnpassJSONViewer.ViewModels;
 using System;
+using System.Linq;
 using System.Windows.Forms;
 using static EnpassJSONViewer.DataBindings.DataBindingExtensions;
 
@@ -39,10 +41,44 @@ namespace EnpassJSONViewer
                     new ListViewColumnBinding<EnpassField>("Updated At", (f) => f.UpdatedAtLocal.ToString(AppConstants.LocalDateFormat)),
                     new ListViewColumnBinding<EnpassField>("Is Sensitive", (f) => f.IsSensitive ? "yes" : "no"),
                     new ListViewColumnBinding<EnpassField>("Is Deleted", (f) => f.IsDeleted ? "yes" : "no"),
-                }
+                },
+                (f) => 0
+            );
+
+            // Data-Bind EnpassAttachment´s to ListView (See DataBindingExtensions class)
+            lvAttachments.ListViewItemSorter = new SimpleListViewItemComparer();
+            lvAttachments.Bind<EnpassAttachment>(
+                new Binding(nameof(ListView.Items), _viewModel.Item, $"{nameof(EnpassItem.Attachments)}"),
+                new[] {
+                    new ListViewColumnBinding<EnpassAttachment>("Name", (f) => f.Name),
+                    new ListViewColumnBinding<EnpassAttachment>("Kind", (f) => f.Kind),
+                    new ListViewColumnBinding<EnpassAttachment>("Data-Size", (f) => ByteUtils.FormatSize((ulong)f.Data.Length)),
+                    new ListViewColumnBinding<EnpassAttachment>("Updated", (f) => f.UpdatedLocal.ToString(AppConstants.LocalDateFormat)),
+                },
+                (f) => f.Kind.StartsWith("image/", StringComparison.InvariantCultureIgnoreCase) ? 1 : 0
             );
 
             rtbNote.DataBindings.Add(new Binding(nameof(RichTextBox.Text), _viewModel.Item, nameof(EnpassItem.Note)));
+
+            tsmiFieldCopyToClipboard.BindClickToCommand<EnpassField>(
+                new Binding("Command", _viewModel, nameof(ItemDetailsViewModel.CopyFieldToClipboardCommand)),
+                new Binding("Parameter", _viewModel, nameof(ItemDetailsViewModel.SelectedField))
+            );
+            tsmiFieldCopyNameValueToClipboard.BindClickToCommand<EnpassField>(
+                new Binding("Command", _viewModel, nameof(ItemDetailsViewModel.CopyFieldNameValueToClipboardCommand)),
+                new Binding("Parameter", _viewModel, nameof(ItemDetailsViewModel.SelectedField))
+            );
+        }
+
+        private void OnFieldsSelectedIndexChanged(object sender, EventArgs e)
+        {
+            EnpassField selectedField = null;
+            if (lvFields.SelectedItems.Count == 1)
+            {
+                ListViewItem listViewItem = lvFields.SelectedItems[0];
+                selectedField = listViewItem.Tag as EnpassField;
+            }
+            _viewModel.SelectedField = selectedField;
         }
     }
 }

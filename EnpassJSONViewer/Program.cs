@@ -14,6 +14,7 @@ namespace EnpassJSONViewer
         static void Main()
         {
             ServiceContainer.Default.RegisterService(new JSONEnpassDatabaseLoader());
+            ServiceContainer.Default.RegisterService(new WinformsClipboardService());
 
             ApplicationConfiguration.Initialize();
             Application.Run(new MainForm());
