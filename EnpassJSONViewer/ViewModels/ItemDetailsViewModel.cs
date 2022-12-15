@@ -6,12 +6,14 @@ using System.Text;
 using System;
 using EnpassJSONViewer.Services;
 using System.Globalization;
+using System.IO;
 
 namespace EnpassJSONViewer.ViewModels
 {
     public class ItemDetailsViewModel : ViewModelBase
     {
         private IClipboardService ClipboardService => GetService<IClipboardService>();
+        private ISaveFileDialogService SaveDialogService => GetService<ISaveFileDialogService>();
 
         public EnpassItem Item { get; }
 
@@ -23,8 +25,15 @@ namespace EnpassJSONViewer.ViewModels
             set => SetValue(value, () => SelectedFieldChanged(value));
         }
 
+        public EnpassAttachment SelectedAttachment
+        {
+            get => GetValue<EnpassAttachment>();
+            set => SetValue(value, () => SelectedAttachmentChanged(value));
+        }
+
         public DelegateCommand<EnpassField> CopyFieldToClipboardCommand { get; }
         public DelegateCommand<EnpassField> CopyFieldNameValueToClipboardCommand { get; }
+        public DelegateCommand<EnpassAttachment> SaveAttachmentCommand { get; }
 
         public ItemDetailsViewModel(EnpassItem item)
         {
@@ -33,8 +42,31 @@ namespace EnpassJSONViewer.ViewModels
 
             CopyFieldToClipboardCommand = new DelegateCommand<EnpassField>(CopyFieldToClipboard, CanCopyFieldToClipboard);
             CopyFieldNameValueToClipboardCommand = new DelegateCommand<EnpassField>(CopyFieldNameValueToClipboard, CanCopyFieldNameValueToClipboard);
+            SaveAttachmentCommand = new DelegateCommand<EnpassAttachment>(SaveAttachment, CanSaveAttachment);
 
             SelectedField = null;
+            SelectedAttachment = null;
+        }
+
+        private void SelectedAttachmentChanged(EnpassAttachment attachment)
+        {
+            SaveAttachmentCommand.RaiseCanExecuteChanged();
+        }
+
+        private bool CanSaveAttachment(EnpassAttachment attachment) => attachment != null;
+        private void SaveAttachment(EnpassAttachment attachment)
+        {
+            string fileExt = Path.GetExtension(attachment.Name);
+            string fileName = attachment.Name;
+            SaveDialogService.Filter = $"{attachment.Kind} (*{fileExt})|*{fileExt}";
+            SaveDialogService.DefaultExt = fileExt;
+            SaveDialogService.Title = $"Save Attachment '{attachment.Name}'";
+            if (SaveDialogService.ShowDialog((e) => { }, directoryName: null, fileName: fileName))
+            {
+                string targetFilePath = SaveDialogService.GetFullFileName();
+                using (var stream = new FileStream(targetFilePath, FileMode.Create, FileAccess.Write))
+                    stream.Write(attachment.Data.AsSpan());
+            }
         }
 
         private void SelectedFieldChanged(EnpassField field)

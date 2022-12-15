@@ -1,31 +1,23 @@
 ﻿using DevExpress.Mvvm;
 using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace EnpassJSONViewer.Services
 {
-    class WinformsOpenFileDialogService : IOpenFileDialogService
+    class WinformsSaveFileDialogService : ISaveFileDialogService
     {
-        private readonly OpenFileDialog _dlg = new OpenFileDialog();
+        private readonly SaveFileDialog _dlg = new SaveFileDialog();
         private readonly Form _parent;
 
-        public WinformsOpenFileDialogService(Form parent)
+        public WinformsSaveFileDialogService(Form parent)
         {
             _parent = parent;
         }
 
-        IFileInfo IOpenFileDialogService.File => _file;
-        private IFileInfo _file = null;
-
-        public IEnumerable<IFileInfo> Files => _files;
-        private ImmutableArray<IFileInfo> _files = ImmutableArray<IFileInfo>.Empty;
-
-        public bool Multiselect { get => _dlg.Multiselect; set => _dlg.Multiselect = value; }
+        public string DefaultExt { get => _dlg.DefaultExt; set => _dlg.DefaultExt = value; }
+        public string DefaultFileName { get => _dlg.FileName; set => _dlg.FileName = value; }
         public bool CheckFileExists { get => _dlg.CheckFileExists; set => _dlg.CheckFileExists = value; }
         public bool AddExtension { get => _dlg.AddExtension; set => _dlg.AddExtension = value; }
         public bool AutoUpgradeEnabled { get => _dlg.AutoUpgradeEnabled; set => _dlg.AutoUpgradeEnabled = value; }
@@ -40,30 +32,22 @@ namespace EnpassJSONViewer.Services
         public string Filter { get => _dlg.Filter; set => _dlg.Filter = value; }
         public int FilterIndex { get => _dlg.FilterIndex; set => _dlg.FilterIndex = value; }
 
+        public IFileInfo File { get; private set; }
+
         public void Reset()
         {
-            _file = null;
-            _files = ImmutableArray<IFileInfo>.Empty;
+            File = null;
             _dlg.Reset();
         }
 
-        public bool ShowDialog(Action<CancelEventArgs> fileOK, string directoryName)
+        public bool ShowDialog(Action<CancelEventArgs> fileOK, string directoryName, string fileName)
         {
-            _file = null;
-            _files = ImmutableArray<IFileInfo>.Empty;
+            File = null;
             _dlg.InitialDirectory = directoryName;
+            _dlg.FileName = fileName;
             if (_dlg.ShowDialog(_parent) == DialogResult.OK)
             {
-                if (_dlg.FileNames.Length > 1)
-                {
-                    _files = _dlg.FileNames.Select(s => new DialogFileInfo(new FileInfo(s))).ToImmutableArray<IFileInfo>();
-                    _file = _files.First();
-                }
-                else
-                {
-                    _file = new DialogFileInfo(new FileInfo(_dlg.FileName));
-                    _files = new[] { _file }.ToImmutableArray();
-                }
+                File = new DialogFileInfo(new FileInfo(_dlg.FileName));
                 return true;
             }
             return false;

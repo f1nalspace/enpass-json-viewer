@@ -1,5 +1,7 @@
+using DevExpress.Mvvm;
 using EnpassJSONViewer.Comparer;
 using EnpassJSONViewer.Models;
+using EnpassJSONViewer.Services;
 using EnpassJSONViewer.Utils;
 using EnpassJSONViewer.ViewModels;
 using System;
@@ -19,6 +21,10 @@ namespace EnpassJSONViewer
                 throw new ArgumentNullException(nameof(item));
 
             _viewModel = new ItemDetailsViewModel(item);
+
+            // Register services
+            IServiceContainer serviceContainer = (_viewModel as ISupportServices).ServiceContainer;
+            serviceContainer.RegisterService(new WinformsSaveFileDialogService(this));
 
             InitializeComponent();
 
@@ -68,6 +74,10 @@ namespace EnpassJSONViewer
                 new Binding("Command", _viewModel, nameof(ItemDetailsViewModel.CopyFieldNameValueToClipboardCommand)),
                 new Binding("Parameter", _viewModel, nameof(ItemDetailsViewModel.SelectedField))
             );
+            tsmiSaveAttachment.BindClickToCommand<EnpassAttachment>(
+                new Binding("Command", _viewModel, nameof(ItemDetailsViewModel.SaveAttachmentCommand)),
+                new Binding("Parameter", _viewModel, nameof(ItemDetailsViewModel.SelectedAttachment))
+            );
         }
 
         private void OnFieldsSelectedIndexChanged(object sender, EventArgs e)
@@ -79,6 +89,17 @@ namespace EnpassJSONViewer
                 selectedField = listViewItem.Tag as EnpassField;
             }
             _viewModel.SelectedField = selectedField;
+        }
+
+        private void OnAttachmentsSelectedIndexChanged(object sender, EventArgs e)
+        {
+            EnpassAttachment selectedAttachment = null;
+            if (lvAttachments.SelectedItems.Count == 1)
+            {
+                ListViewItem listViewItem = lvAttachments.SelectedItems[0];
+                selectedAttachment = listViewItem.Tag as EnpassAttachment;
+            }
+            _viewModel.SelectedAttachment = selectedAttachment;
         }
     }
 }

@@ -23,6 +23,7 @@ namespace EnpassJSONViewer
             // Register services
             IServiceContainer serviceContainer = (_viewModel as ISupportServices).ServiceContainer;
             serviceContainer.RegisterService(new WinformsOpenFileDialogService(this));
+            serviceContainer.RegisterService(new WinformsSaveFileDialogService(this));
             serviceContainer.RegisterService(new WinformsModalDialogsService(this));
 
             InitializeComponent();
