@@ -74,6 +74,10 @@ namespace EnpassJSONViewer
                 new Binding("Command", _viewModel, nameof(ItemDetailsViewModel.CopyFieldNameValueToClipboardCommand)),
                 new Binding("Parameter", _viewModel, nameof(ItemDetailsViewModel.SelectedField))
             );
+            tsmiFieldCopyValueToClipboard.BindClickToCommand<EnpassField>(
+                new Binding("Command", _viewModel, nameof(ItemDetailsViewModel.CopyFieldValueToClipboardCommand)),
+                new Binding("Parameter", _viewModel, nameof(ItemDetailsViewModel.SelectedField))
+            );
             tsmiSaveAttachment.BindClickToCommand<EnpassAttachment>(
                 new Binding("Command", _viewModel, nameof(ItemDetailsViewModel.SaveAttachmentCommand)),
                 new Binding("Parameter", _viewModel, nameof(ItemDetailsViewModel.SelectedAttachment))

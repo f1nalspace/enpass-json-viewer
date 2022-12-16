@@ -50,11 +50,12 @@
             this.tsmiFieldCopyNameValueToClipboard = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.lvAttachments = new System.Windows.Forms.ListView();
+            this.cmsAttachments = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsmiSaveAttachment = new System.Windows.Forms.ToolStripMenuItem();
             this.imglstAttachments = new System.Windows.Forms.ImageList(this.components);
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.rtbNote = new System.Windows.Forms.RichTextBox();
-            this.cmsAttachments = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.tsmiSaveAttachment = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiFieldCopyValueToClipboard = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -67,8 +68,8 @@
             this.groupBox2.SuspendLayout();
             this.cmsFields.SuspendLayout();
             this.groupBox3.SuspendLayout();
-            this.groupBox4.SuspendLayout();
             this.cmsAttachments.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -276,9 +277,10 @@
             // 
             this.cmsFields.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiFieldCopyToClipboard,
-            this.tsmiFieldCopyNameValueToClipboard});
+            this.tsmiFieldCopyNameValueToClipboard,
+            this.tsmiFieldCopyValueToClipboard});
             this.cmsFields.Name = "cmsFields";
-            this.cmsFields.Size = new System.Drawing.Size(238, 48);
+            this.cmsFields.Size = new System.Drawing.Size(238, 92);
             // 
             // tsmiFieldCopyToClipboard
             // 
@@ -323,6 +325,19 @@
             this.lvAttachments.View = System.Windows.Forms.View.SmallIcon;
             this.lvAttachments.SelectedIndexChanged += new System.EventHandler(this.OnAttachmentsSelectedIndexChanged);
             // 
+            // cmsAttachments
+            // 
+            this.cmsAttachments.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiSaveAttachment});
+            this.cmsAttachments.Name = "cmsAttachments";
+            this.cmsAttachments.Size = new System.Drawing.Size(174, 26);
+            // 
+            // tsmiSaveAttachment
+            // 
+            this.tsmiSaveAttachment.Name = "tsmiSaveAttachment";
+            this.tsmiSaveAttachment.Size = new System.Drawing.Size(173, 22);
+            this.tsmiSaveAttachment.Text = "Save Attachment...";
+            // 
             // imglstAttachments
             // 
             this.imglstAttachments.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
@@ -357,18 +372,11 @@
             this.rtbNote.Text = "";
             this.rtbNote.WordWrap = false;
             // 
-            // cmsAttachments
+            // tsmiFieldCopyValueToClipboard
             // 
-            this.cmsAttachments.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiSaveAttachment});
-            this.cmsAttachments.Name = "cmsAttachments";
-            this.cmsAttachments.Size = new System.Drawing.Size(181, 48);
-            // 
-            // tsmiSaveAttachment
-            // 
-            this.tsmiSaveAttachment.Name = "tsmiSaveAttachment";
-            this.tsmiSaveAttachment.Size = new System.Drawing.Size(180, 22);
-            this.tsmiSaveAttachment.Text = "Save Attachment...";
+            this.tsmiFieldCopyValueToClipboard.Name = "tsmiFieldCopyValueToClipboard";
+            this.tsmiFieldCopyValueToClipboard.Size = new System.Drawing.Size(237, 22);
+            this.tsmiFieldCopyValueToClipboard.Text = "Copy value to Clipboard";
             // 
             // ItemDetailsForm
             // 
@@ -398,8 +406,8 @@
             this.groupBox2.ResumeLayout(false);
             this.cmsFields.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
-            this.groupBox4.ResumeLayout(false);
             this.cmsAttachments.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -431,5 +439,6 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiFieldCopyNameValueToClipboard;
         private System.Windows.Forms.ContextMenuStrip cmsAttachments;
         private System.Windows.Forms.ToolStripMenuItem tsmiSaveAttachment;
+        private System.Windows.Forms.ToolStripMenuItem tsmiFieldCopyValueToClipboard;
     }
 }

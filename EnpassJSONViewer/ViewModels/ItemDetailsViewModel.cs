@@ -33,6 +33,7 @@ namespace EnpassJSONViewer.ViewModels
 
         public DelegateCommand<EnpassField> CopyFieldToClipboardCommand { get; }
         public DelegateCommand<EnpassField> CopyFieldNameValueToClipboardCommand { get; }
+        public DelegateCommand<EnpassField> CopyFieldValueToClipboardCommand { get; }
         public DelegateCommand<EnpassAttachment> SaveAttachmentCommand { get; }
 
         public ItemDetailsViewModel(EnpassItem item)
@@ -42,6 +43,7 @@ namespace EnpassJSONViewer.ViewModels
 
             CopyFieldToClipboardCommand = new DelegateCommand<EnpassField>(CopyFieldToClipboard, CanCopyFieldToClipboard);
             CopyFieldNameValueToClipboardCommand = new DelegateCommand<EnpassField>(CopyFieldNameValueToClipboard, CanCopyFieldNameValueToClipboard);
+            CopyFieldValueToClipboardCommand = new DelegateCommand<EnpassField>(CopyFieldValueToClipboard, CanCopyFieldValueToClipboard);
             SaveAttachmentCommand = new DelegateCommand<EnpassAttachment>(SaveAttachment, CanSaveAttachment);
 
             SelectedField = null;
@@ -73,6 +75,7 @@ namespace EnpassJSONViewer.ViewModels
         {
             CopyFieldToClipboardCommand.RaiseCanExecuteChanged();
             CopyFieldNameValueToClipboardCommand.RaiseCanExecuteChanged();
+            CopyFieldValueToClipboardCommand.RaiseCanExecuteChanged();
         }
 
         private bool CanCopyFieldToClipboard(EnpassField field) => field != null;
@@ -98,7 +101,6 @@ namespace EnpassJSONViewer.ViewModels
             s.Append('\'');
             s.Append(field.UpdatedAtUTC.ToString(CultureInfo.InvariantCulture));
             s.Append('\'');
-            s.Append(", ");
             string text = s.ToString();
             ClipboardService.SetText(text);
         }
@@ -108,6 +110,12 @@ namespace EnpassJSONViewer.ViewModels
         {
             string text = $"{field.Label} => {field.Value}";
             ClipboardService.SetText(text);
+        }
+
+        private bool CanCopyFieldValueToClipboard(EnpassField field) => field != null;
+        private void CopyFieldValueToClipboard(EnpassField field)
+        {
+            ClipboardService.SetText(field.Value ?? string.Empty);
         }
     }
 }
