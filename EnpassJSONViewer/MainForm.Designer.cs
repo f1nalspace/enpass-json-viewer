@@ -41,6 +41,8 @@
             this.tvCategories = new System.Windows.Forms.TreeView();
             this.imglstCategories = new System.Windows.Forms.ImageList(this.components);
             this.lvItems = new System.Windows.Forms.ListView();
+            this.cmsItems = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsmiShowDetails = new System.Windows.Forms.ToolStripMenuItem();
             this.imglstItems = new System.Windows.Forms.ImageList(this.components);
             this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -48,12 +50,17 @@
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmiCopyUsernameToClipboard = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiCopyPasswordToClipboard = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiCopyUrlToClipboard = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.cmsItems.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -121,7 +128,7 @@
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.Location = new System.Drawing.Point(0, 60);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -142,7 +149,7 @@
             this.tvCategories.ImageIndex = 0;
             this.tvCategories.ImageList = this.imglstCategories;
             this.tvCategories.Location = new System.Drawing.Point(0, 0);
-            this.tvCategories.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tvCategories.Margin = new System.Windows.Forms.Padding(4);
             this.tvCategories.Name = "tvCategories";
             this.tvCategories.SelectedImageIndex = 0;
             this.tvCategories.Size = new System.Drawing.Size(342, 548);
@@ -160,11 +167,12 @@
             // lvItems
             // 
             this.lvItems.AllowColumnReorder = true;
+            this.lvItems.ContextMenuStrip = this.cmsItems;
             this.lvItems.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvItems.FullRowSelect = true;
             this.lvItems.GridLines = true;
             this.lvItems.Location = new System.Drawing.Point(0, 0);
-            this.lvItems.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lvItems.Margin = new System.Windows.Forms.Padding(4);
             this.lvItems.MultiSelect = false;
             this.lvItems.Name = "lvItems";
             this.lvItems.Size = new System.Drawing.Size(682, 548);
@@ -173,7 +181,23 @@
             this.lvItems.UseCompatibleStateImageBehavior = false;
             this.lvItems.View = System.Windows.Forms.View.Details;
             this.lvItems.SelectedIndexChanged += new System.EventHandler(this.OnItemsSelectedIndexChanged);
-            this.lvItems.DoubleClick += new System.EventHandler(this.OnItemsDoubleClick);
+            // 
+            // cmsItems
+            // 
+            this.cmsItems.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiShowDetails,
+            this.toolStripMenuItem2,
+            this.tsmiCopyUsernameToClipboard,
+            this.tsmiCopyPasswordToClipboard,
+            this.tsmiCopyUrlToClipboard});
+            this.cmsItems.Name = "cmsItems";
+            this.cmsItems.Size = new System.Drawing.Size(228, 120);
+            // 
+            // tsmiShowDetails
+            // 
+            this.tsmiShowDetails.Name = "tsmiShowDetails";
+            this.tsmiShowDetails.Size = new System.Drawing.Size(227, 22);
+            this.tsmiShowDetails.Text = "Show Details...";
             // 
             // imglstItems
             // 
@@ -228,6 +252,29 @@
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.OnExitClick);
             // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(224, 6);
+            // 
+            // tsmiCopyUsernameToClipboard
+            // 
+            this.tsmiCopyUsernameToClipboard.Name = "tsmiCopyUsernameToClipboard";
+            this.tsmiCopyUsernameToClipboard.Size = new System.Drawing.Size(227, 22);
+            this.tsmiCopyUsernameToClipboard.Text = "Copy Username to Clipboard";
+            // 
+            // tsmiCopyPasswordToClipboard
+            // 
+            this.tsmiCopyPasswordToClipboard.Name = "tsmiCopyPasswordToClipboard";
+            this.tsmiCopyPasswordToClipboard.Size = new System.Drawing.Size(227, 22);
+            this.tsmiCopyPasswordToClipboard.Text = "Copy Password to Clipboard";
+            // 
+            // tsmiCopyUrlToClipboard
+            // 
+            this.tsmiCopyUrlToClipboard.Name = "tsmiCopyUrlToClipboard";
+            this.tsmiCopyUrlToClipboard.Size = new System.Drawing.Size(227, 22);
+            this.tsmiCopyUrlToClipboard.Text = "Copy URL to Clipboard";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
@@ -239,7 +286,7 @@
             this.Controls.Add(this.menuStrip1);
             this.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainForm";
             this.Text = "Enpass JSON Viewer";
             this.statusStrip1.ResumeLayout(false);
@@ -250,6 +297,7 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.cmsItems.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -277,5 +325,11 @@
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ContextMenuStrip cmsItems;
+        private System.Windows.Forms.ToolStripMenuItem tsmiShowDetails;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem tsmiCopyUsernameToClipboard;
+        private System.Windows.Forms.ToolStripMenuItem tsmiCopyPasswordToClipboard;
+        private System.Windows.Forms.ToolStripMenuItem tsmiCopyUrlToClipboard;
     }
 }

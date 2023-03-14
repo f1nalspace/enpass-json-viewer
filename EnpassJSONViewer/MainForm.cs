@@ -56,6 +56,29 @@ namespace EnpassJSONViewer
                 (f) => 0
             );
 
+            tsmiShowDetails.BindClickToCommand<EnpassItem>(
+                new Binding("Command", _viewModel, nameof(MainViewModel.ShowItemDetailsCommand)),
+                new Binding("Parameter", _viewModel, nameof(MainViewModel.ActiveItem), false, DataSourceUpdateMode.OnPropertyChanged)
+            );
+            tsmiCopyUsernameToClipboard.BindClickToCommand<EnpassItem>(
+                new Binding("Command", _viewModel, nameof(MainViewModel.CopyUsernameToClipboardCommand)),
+                new Binding("Parameter", _viewModel, nameof(MainViewModel.ActiveItem), false, DataSourceUpdateMode.OnPropertyChanged)
+            );
+            tsmiCopyPasswordToClipboard.BindClickToCommand<EnpassItem>(
+                new Binding("Command", _viewModel, nameof(MainViewModel.CopyPasswordToClipboardCommand)),
+                new Binding("Parameter", _viewModel, nameof(MainViewModel.ActiveItem), false, DataSourceUpdateMode.OnPropertyChanged)
+            );
+            tsmiCopyUrlToClipboard.BindClickToCommand<EnpassItem>(
+                new Binding("Command", _viewModel, nameof(MainViewModel.CopyUrlToClipboardCommand)),
+                new Binding("Parameter", _viewModel, nameof(MainViewModel.ActiveItem), false, DataSourceUpdateMode.OnPropertyChanged)
+            );
+
+            lvItems.BindEventToCommand<EnpassItem>(
+                nameof(ListView.DoubleClick),
+                new Binding("Command", _viewModel, nameof(MainViewModel.ShowItemDetailsCommand)),
+                new Binding("Parameter", _viewModel, nameof(MainViewModel.ActiveItem), false, DataSourceUpdateMode.OnPropertyChanged)
+            );
+
             // Show ActiveFolder and ActiveItem in StatusStrip (DataBinding does not work there)
             OnViewModelPropertyChanged(this, new PropertyChangedEventArgs(nameof(MainViewModel.ActiveFolder)));
             OnViewModelPropertyChanged(this, new PropertyChangedEventArgs(nameof(MainViewModel.ActiveItem)));
@@ -92,11 +115,5 @@ namespace EnpassJSONViewer
         private void OnSelectFileClick(object sender, EventArgs e) => _viewModel.SelectFileCommand.Execute(null);
 
         private void OnExitClick(object sender, EventArgs e) => Close();
-
-        private void OnItemsDoubleClick(object sender, EventArgs e)
-        {
-            if (_viewModel.ShowItemDetailsCommand.CanExecute(_viewModel.ActiveItem))
-                _viewModel.ShowItemDetailsCommand.Execute(_viewModel.ActiveItem);
-        }
     }
 }

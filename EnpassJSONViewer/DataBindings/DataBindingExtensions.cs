@@ -553,7 +553,36 @@ namespace EnpassJSONViewer.DataBindings
             {
                 item.Enabled = enabled;
             });
-            item.Click += (s, e) => binding.Execute();        
+            item.Click += (s, e) => binding.Execute();
+        }
+
+        public static void BindEventToCommand<T>(this Control control, string eventName, Binding commandBinding, Binding parameterBinding)
+        {
+            if (control == null)
+                throw new ArgumentNullException(nameof(control));
+            if (string.IsNullOrWhiteSpace(eventName))
+                throw new ArgumentNullException(nameof(eventName));
+            if (commandBinding == null)
+                throw new ArgumentNullException(nameof(commandBinding));
+            if (parameterBinding == null)
+                throw new ArgumentNullException(nameof(parameterBinding));
+
+            // TODO(final): Cache click command and can-execute-action
+            var binding = CommandBindingsManager<Control, T>.Instance.Bind(control, commandBinding, parameterBinding, (value, enabled) =>
+            {
+            });
+
+            switch (eventName)
+            {
+                case nameof(Control.Click):
+                    control.Click += (s, e) => binding.Execute();
+                    break;
+                case nameof(Control.DoubleClick):
+                    control.DoubleClick += (s, e) => binding.Execute();
+                    break;
+                default:
+                    throw new NotSupportedException($"Event '{eventName}' is not supported!");
+            }
         }
     }
 }
