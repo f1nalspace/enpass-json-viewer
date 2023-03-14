@@ -105,5 +105,11 @@ namespace EnpassJSONViewer
             }
             _viewModel.SelectedAttachment = selectedAttachment;
         }
+
+        private void OnAttachmentsMouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (_viewModel.SaveAttachmentCommand.CanExecute(_viewModel.SelectedAttachment))
+                _viewModel.SaveAttachmentCommand.Execute(_viewModel.SelectedAttachment);
+        }
     }
 }
