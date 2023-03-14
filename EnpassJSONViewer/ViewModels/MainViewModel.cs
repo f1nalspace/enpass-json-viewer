@@ -76,14 +76,13 @@ namespace EnpassJSONViewer.ViewModels
 
         private void SelectFile()
         {
-            UnloadFile();
-
             OpenDlgService.Title = "Select JSON File";
             OpenDlgService.Filter = "Enpass JSON File (*.json)|*.json";
             OpenDlgService.Multiselect = false;
             if (OpenDlgService.ShowDialog())
             {
                 string filePath = OpenDlgService.GetFullFileName();
+                UnloadFile();
                 LoadFile(filePath);
             }
         }
